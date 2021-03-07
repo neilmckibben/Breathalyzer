@@ -4,36 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EFD6AC">
-
-    <TextView
-        android:id="@+id/timeLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Already sober!"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/title2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
-        app:layout_constraintStart_toEndOf="@+id/title2"
-        app:layout_constraintTop_toTopOf="@+id/title2" />
-
-    <TextView
-        android:id="@+id/title2"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Sober in: "
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.212"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress"
-        app:layout_constraintVertical_bias="0.487" />
+    android:background="#E0F2F1">
 
     <com.txusballesteros.widgets.FitChart
         android:id="@+id/progress"
@@ -41,7 +12,7 @@
         android:layout_height="350dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        app:animationMethod="linear"
+        app:animationMethod="overdraw"
         app:backStrokeColor="#12263A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +31,7 @@
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/progress"
         app:layout_constraintEnd_toEndOf="@+id/progress"
         app:layout_constraintHorizontal_bias="0.434"
@@ -70,7 +42,6 @@
         android:id="@+id/bacValue"
         android:layout_width="334dp"
         android:layout_height="52dp"
-        android:text=".56"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -80,4 +51,48 @@
         app:layout_constraintStart_toStartOf="@+id/progress"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/startButton"
+        style="@android:style/Widget.Button.Inset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#519E8A"
+        android:text="Start"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/progress"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="@+id/progress"
+        app:layout_constraintTop_toTopOf="@+id/progress"
+        app:layout_constraintVertical_bias="0.543" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        app:backgroundTint="#E8EAF6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_sharp_settings_48" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="250dp"
+        android:layout_height="7dp"
+        android:animationResolution="@android:integer/config_shortAnimTime"
+        android:max="5000"
+        android:progress="0"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bacValue"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

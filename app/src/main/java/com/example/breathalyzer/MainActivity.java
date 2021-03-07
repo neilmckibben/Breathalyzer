@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import java.util.Random;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,9 +20,12 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +37,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
     private final static int PERMISSION_CODE = 2;
-
+    private static int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,66 +46,65 @@ public class MainActivity extends AppCompatActivity {
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         FitChart fitChart = (FitChart)findViewById(R.id.progress);
         TextView bacValue = findViewById(R.id.bacValue);
-        TextView timeLeft = findViewById(R.id.timeLeft);
+        Button startButton = findViewById(R.id.startButton);
         fitChart.setMinValue(0f);
         fitChart.setMaxValue(1f);
-        fitChart.setValue(.56f);
-        bacValue.setText(".56");
-        new CountDownTimer(3000000, 1000) {
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.INVISIBLE);
+                startInput();
+            }
+        });
+    }
 
+    private void startInput(){
+        TextView title = findViewById(R.id.title);
+        FitChart fitChart = (FitChart)findViewById(R.id.progress);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        TextView bacValue = findViewById(R.id.bacValue);
+        title.setText("");
+        title.setVisibility(View.VISIBLE);
+        fitChart.setMinValue(0f);
+        fitChart.setMaxValue(1f);
+        progressBar.setProgress(0);
+        count = 0;
+        new CountDownTimer(6000, 1000) {
             public void onTick(long millisUntilFinished) {
-                timeLeft.setText("" + millisUntilFinished / 1000);
+                title.setText("Starting in " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
-                timeLeft.setText("Sober");
+                title.setText("Blow!");
+                progressBar.setVisibility(View.VISIBLE);
+                new CountDownTimer(5000, 50) {
+                    public void onTick(long millisUntilFinished) {  
+                        progressBar.incrementProgressBy(50);
+                    }
+                    public void onFinish() {
+                        title.setText("Blood Alcohol Content");
+                        progressBar.setVisibility(View.INVISIBLE);
+                        float val = (float) Math.random();
+                        fitChart.setValue(val);
+                        bacValue.setText(val+"");
+                    }
+                }.start();
             }
         }.start();
-        getBluetoothPermissions();
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null) {
-            Toast.makeText(getApplicationContext(), "Phone does not have bluetooth", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            if (!bluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-                Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-                if (pairedDevices.size() > 0) {
-                    // There are paired devices. Get the name and address of each paired device.
-                    for (BluetoothDevice device : pairedDevices) {
-                        String deviceName = device.getName();
-                        String deviceHardwareAddress = device.getAddress(); // MAC address
-                    }
-                }
-            }
-        }
-//        ViewPager viewPager = findViewById(R.id.view_pager);
-//        viewPager.setAdapter(sectionsPagerAdapter);
-//        TabLayout tabs = findViewById(R.id.tabs);
-//        tabs.setupWithViewPager(viewPager);
-//        FloatingActionButton fab = findViewById(R.id.fab);
+    }
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+
+//    private void getBluetoothPermissions(){
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            if (ContextCompat.checkSelfPermission(getApplicationContext(),
+//                    Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(
+//                        MainActivity.this,
+//                        new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+//                        PERMISSION_CODE);
 //            }
-//        });
-    }
+//        }
+//    }
 
-
-    private void getBluetoothPermissions(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                        MainActivity.this,
-                        new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                        PERMISSION_CODE);
-            }
-        }
-    }
 }
