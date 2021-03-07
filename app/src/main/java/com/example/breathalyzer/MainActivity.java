@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.opengl.GLSurfaceView;
 import android.os.Build;
 import java.util.Random;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -37,7 +40,8 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
     private final static int PERMISSION_CODE = 2;
-    private static int count;
+    String TAG = "bluetoothStuff";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         fitChart.setMinValue(0f);
         fitChart.setMaxValue(1f);
         progressBar.setProgress(0);
-        count = 0;
         new CountDownTimer(6000, 1000) {
             public void onTick(long millisUntilFinished) {
                 title.setText("Starting in " + millisUntilFinished / 1000);
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
     }
+}
 
 
 //    private void getBluetoothPermissions(){
@@ -106,5 +110,3 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
 //    }
-
-}
